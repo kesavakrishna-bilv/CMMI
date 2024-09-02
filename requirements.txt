@@ -1,0 +1,8 @@
+streamlit
+pdfplumber
+langchain
+csv
+pickle
+langchain_core
+langchain_groq
+langchain_google_genai
