@@ -6,12 +6,13 @@ from langchain_groq import ChatGroq
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+# load_dotenv()
 
 # Load API keys from environment variables
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-groq_api_key = os.getenv('GROQ_API_KEY')
-
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# groq_api_key = os.getenv('GROQ_API_KEY')
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 # Function to load preprocessed documents and initialize vector store and retriever
 def initialize_retriever():
     st.write("Loading preprocessed documents...")
