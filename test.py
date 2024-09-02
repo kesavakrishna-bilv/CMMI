@@ -12,7 +12,9 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from dotenv import load_dotenv
 import pandas as pd
 import streamlit as st
-
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 # load_dotenv()
 # GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 # groq_api_key = os.getenv('GROQ_API_KEY')
