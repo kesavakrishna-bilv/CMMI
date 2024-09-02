@@ -11,10 +11,18 @@ from langchain_groq import ChatGroq
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from dotenv import load_dotenv
 import pandas as pd
+import streamlit as st
 
-load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-groq_api_key = os.getenv('GROQ_API_KEY')
+# load_dotenv()
+# GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+# groq_api_key = os.getenv('GROQ_API_KEY')
+
+import streamlit as st
+
+# Access secrets
+GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+
 
 class Document(BaseDocument):
     def __init__(self, text):
