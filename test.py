@@ -111,8 +111,8 @@ def answer_questions_from_csv(input_csv, output_csv, chains):
             f"Additional Info: {row.get('Additional Info', '')}\n"
             f"Please provide a clear and accurate response to each and every question asked: {row.get('Auditor Questions', '')}")
         employee = getAnswerFromRAGChain(chains, employee_prompt, 'employee')
-        print(employee_prompt)
-        print(employee)
+        # print(employee_prompt)
+        # print(employee)
         employees.append(employee)
     df['Employee'] = employees
     
