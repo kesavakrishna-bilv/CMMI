@@ -15,14 +15,11 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 # groq_api_key = os.getenv('GROQ_API_KEY')
 GOOGLE_API_KEY = st.secrets["GOOGLE_API_KEY"]
 GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
-# Function to load preprocessed documents and initialize vector store and retriever
-def initialize_retriever():
-    st.write("Loading preprocessed documents...")
-    with open("preprocessed_documents.pkl", "rb") as f:
-        documents = pickle.load(f)
 
-    st.write("Creating vector store...")
-    vector_store = create_vector_store(documents)
+# Function to load the saved vector store and initialize the retriever
+def initialize_retriever():
+    st.write("Loading vector store...")
+    vector_store = load_vector_store(persist_directory="chroma_store")  # Specify your persist directory
     return vector_store.as_retriever()
 
 # Function to initialize the language model and RAG chain
@@ -57,7 +54,6 @@ def main_page():
         st.success("Questions answered successfully!")
         with open(output_csv_path, "rb") as f:
             st.download_button("Download output CSV", f, file_name="output.csv")
-
 
 def manual_input_page():
     st.title("Manual Input for CMMI Questions")
@@ -107,4 +103,4 @@ page_names_to_funcs = {
 }
 
 selected_page = st.sidebar.selectbox("Select a page", page_names_to_funcs.keys())
-page_names_to_funcs[selected_page]()#type:ignore
+page_names_to_funcs[selected_page]() # type: ignore
