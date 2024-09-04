@@ -50,13 +50,13 @@ def load_and_prepare_documents(pdf_path):
     split_documents = text_splitter.split_documents(document_objects)
     return split_documents
 
-def create_vector_store(documents, persist_directory="chroma_store"):
+def create_vector_store(documents, persist_directory="token_chroma_store"):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_store = Chroma.from_documents(documents, embeddings, persist_directory=persist_directory)
     vector_store.persist()
     return vector_store
 
-def load_vector_store(persist_directory="chroma_store"):
+def load_vector_store(persist_directory="token_chroma_store"):
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_store = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     return vector_store
@@ -126,7 +126,7 @@ import os
 
 def main():
     pdf_path = "CMMI.pdf"  # Update with your PDF path
-    persist_directory = "chroma_store"
+    persist_directory = "token_chroma_store"
 
     if not os.path.exists(persist_directory):
         documents = load_and_prepare_documents(pdf_path)
