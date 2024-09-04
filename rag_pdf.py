@@ -67,37 +67,40 @@ def load_PDF_vector_store(persist_directory="pdf_semantic_chroma_store"):
     vector_store = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
     return vector_store
 
+def main():
+    pdf_path = "HR Policy Manual 1.pdf"  # Update with your PDF path
+    persist_directory = "pdf_semantic_chroma_store"
+    
+    if not os.path.exists(persist_directory):
+            # Load and prepare documents using semantic chunking
+        documents = load_and_prepare_documents(pdf_path)
+            
+            # Create and persist the vector store
+        vector_store = create_PDF_vector_store(documents, persist_directory)
+    else:
+            # Load the existing vector store
+        vector_store = load_PDF_vector_store(persist_directory)
+    
+    retriever = vector_store.as_retriever()
+    
+    llm = ChatGroq(
+            model="mixtral-8x7b-32768",
+            temperature=0,
+            max_tokens=None,
+            timeout=None,
+            max_retries=2,
+        )#type:ignore
+    
+    chains = getRAGChain_PDF(retriever, llm)
+    
+    query = "What is the key topic discussed on the first page of the document?"
+    output_type = 'answer'
+    # answer_questions_from_csv(input_csv, output_csv, chains)
+    answer = getAnswerFromRAGChain_PDF(chains, query, output_type)
+    
+    # Print the result
+    print(f"Query: {query}")
+    print(f"Answer: {answer}")
 
-pdf_path = "HR Policy Manual 1.pdf"  # Update with your PDF path
-persist_directory = "pdf_semantic_chroma_store"
-
-if not os.path.exists(persist_directory):
-        # Load and prepare documents using semantic chunking
-    documents = load_and_prepare_documents(pdf_path)
-        
-        # Create and persist the vector store
-    vector_store = create_PDF_vector_store(documents, persist_directory)
-else:
-        # Load the existing vector store
-    vector_store = load_PDF_vector_store(persist_directory)
-
-retriever = vector_store.as_retriever()
-
-llm = ChatGroq(
-        model="mixtral-8x7b-32768",
-        temperature=0,
-        max_tokens=None,
-        timeout=None,
-        max_retries=2,
-    )#type:ignore
-
-chains = getRAGChain_PDF(retriever, llm)
-
-query = "What is the key topic discussed on the first page of the document?"
-output_type = 'answer'
-# answer_questions_from_csv(input_csv, output_csv, chains)
-answer = getAnswerFromRAGChain_PDF(chains, query, output_type)
-
-# Print the result
-print(f"Query: {query}")
-print(f"Answer: {answer}")
+if __name__ == "__main__":
+    main()
